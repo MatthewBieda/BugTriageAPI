@@ -1,0 +1,23 @@
+[2022-06-07 13:40:32,878] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 13:45:01,235] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 13:53:47,732] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 14:48:08,247] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 14:52:32,514] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 15:50:53,380] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 15:50:56,755] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 15:51:54,669] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 16:00:40,238] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 16:01:19,692] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 16:02:16,364] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 16:02:51,802] INFO in BugTriage_API: <Request 'http://127.0.0.1:5000/bugtriage/api?title=Workingtitle&description%20=Workingdescription%20&priority=High' [POST]>
+[2022-06-07 16:12:05,203] INFO in BugTriage_API: {'id': 3, 'title': 'Validation E-mail', 'description': 'Email to validate test account was never receieved', 'priority': '123'}
+[2022-06-07 16:13:00,144] INFO in BugTriage_API: <Request 'http://127.0.0.1:5000/bugtriage/api' [POST]>
+[2022-06-07 16:15:03,004] INFO in BugTriage_API: <Request 'http://127.0.0.1:5000/bugtriage/api' [POST]>
+[2022-06-07 16:15:56,067] INFO in BugTriage_API: {'title': 'atitle', 'description': 'adescription'}
+[2022-06-07 16:18:51,282] INFO in BugTriage_API: {'title': 'atitle', 'description': 'adescription'}
+[2022-06-07 16:19:40,824] INFO in BugTriage_API: {'title': 'atitle', 'description': 'adescription'}
+[2022-06-07 16:21:26,735] INFO in BugTriage_API: {'title': 'atitle', 'description': 'adescription', 'priority': 'High'}
+[2022-06-07 16:22:03,444] INFO in BugTriage_API: {'title': 'atitle', 'description': 'adescription', 'priority': 'High'}
+[2022-06-07 16:23:37,558] INFO in BugTriage_API: {'title': 'atitle', 'description': 'adescription'}
+[2022-06-07 16:24:13,481] INFO in BugTriage_API: {'title': 'atitle', 'description': 'adescription', 'priority': 'xyz'}
+[2022-06-07 16:26:30,007] INFO in BugTriage_API: {'Title': 'Session state not persisting', 'Description': 'Users are not being persisted properly between pages', 'Priority': 'High'}
