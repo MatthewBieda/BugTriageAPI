@@ -1,4 +1,10 @@
-from flask import Flask, jsonify, request, make_response
+from azure.storage.queue import (
+    QueueClient,
+    BinaryBase64EncodePolicy,
+    BinaryBase64DecodePolicy
+)
+
+from flask import Flask, jsonify, request
 import logging
 import os
 
@@ -27,6 +33,8 @@ bugs = [
 ]
 
 # Implementing logging to a file
+
+
 @app.before_first_request
 def before_first_request():
     log_level = logging.INFO
@@ -66,16 +74,34 @@ def triage_bugs():
         return jsonify({'bugs': bugs})
 
     if request.method == 'POST':
-        #Validating the API request
+        # Validating the API request
         if not request.json or not 'priority' in request.json or request.json['priority'] not in {"High", "Medium", "Low"}:
             app.logger.info(request.json)
             return 'Bad request! This event has been logged.', 400
 
+        if request.json['priority'] == "High":
+            # Retrieve the connection string from an environment
+            # variable named AZURE_STORAGE_CONNECTION_STRING
+            connect_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+
+            # Create a unique name for the queue
+            q_name = "priorityqueue"
+
+            # Instantiate a QueueClient object which will
+            # be used to create and manipulate the queue
+            queue_client = QueueClient.from_connection_string(
+                connect_str, q_name)
+
+            # Send the bug
+            queue_client.send_message(request.json)
+
+        else:
+            connect_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+            q_name = "lowerpriorityqueue"
+
+            queue_client = QueueClient.from_connection_string(
+                connect_str, q_name)
+
+            queue_client.send_message(request.json)
+
         return request.json
-
-
-
-
-
-
-
