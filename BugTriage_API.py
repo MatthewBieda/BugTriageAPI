@@ -5,11 +5,63 @@ from azure.storage.queue import (
 )
 
 from flask import Flask, jsonify, request
-import logging
 import os
 
 app = Flask(__name__)
 
+@app.route("/bugtriage/api", methods=['GET', 'POST'])
+def triage_bugs():
+    # forward everything on to the right destination
+    # Bugs must be correctly tagged with Priority High/Medium/Low, else they are only logged
+
+    # First check whether priority is valid and otherwise append to the log file
+    # Then check whether the bug is high priority, if so it must be sent to SLACK
+    # All other valid bugs are sent to JIRA
+    if request.method == 'GET':
+
+        return "<h1>Welcome to the Bug Triaging API</h1>\
+                <h3>Please ensure your JSON post request conforms to the following schema:</h3>\
+                <h4>{title: yourtitle, description: yourdescription, priority: High/Medium/Low}</h4>\
+                <h4>High priority bugs will be sent to SLACK, lower priority bugs will be backlogged on TRELLO\
+                and invalid requests will be rejected and emailed.</h4>"
+
+    if request.method == 'POST':
+        # Validating the API request
+        if not request.json or not 'priority' in request.json or request.json['priority'] not in {"High", "Medium", "Low"}:
+            app.logger.info(request.json)
+            return 'Bad request! This event has been logged.', 400
+
+        if request.json['priority'] == "High":
+            # Retrieve the connection string from an environment
+            # variable named AZURE_STORAGE_CONNECTION_STRING
+            connect_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+
+            # Create a unique name for the queue
+            q_name = "priorityqueue"
+
+            # Instantiate a QueueClient object which will
+            # be used to create and manipulate the queue
+            queue_client = QueueClient.from_connection_string(
+                connect_str, q_name)
+
+            # Send the bug
+            queue_client.send_message(request.json)
+
+        else:
+            connect_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+            q_name = "lowerpriorityqueue"
+
+            queue_client = QueueClient.from_connection_string(
+                connect_str, q_name)
+
+            queue_client.send_message(request.json)
+
+        return request.json
+
+
+
+
+'''
 # Creating an in-memory data structure for demonstration purposes
 bugs = [
     {
@@ -57,51 +109,4 @@ def before_first_request():
         '[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
     handler.setFormatter(defaultFormatter)
 
-
-@app.route("/bugtriage/api", methods=['GET', 'POST'])
-def triage_bugs():
-    # forward everything on to the right destination
-    # Bugs must be correctly tagged with Priority High/Medium/Low, else they are only logged
-
-    # First check whether priority is valid and otherwise append to the log file
-    # Then check whether the bug is high priority, if so it must be sent to SLACK
-    # All other valid bugs are sent to JIRA
-    if request.method == 'GET':
-        for bug in bugs:
-            if bug['priority'] not in {"High", "Medium", "Low"}:
-                app.logger.info(bug)
-
-        return jsonify({'bugs': bugs})
-
-    if request.method == 'POST':
-        # Validating the API request
-        if not request.json or not 'priority' in request.json or request.json['priority'] not in {"High", "Medium", "Low"}:
-            app.logger.info(request.json)
-            return 'Bad request! This event has been logged.', 400
-
-        if request.json['priority'] == "High":
-            # Retrieve the connection string from an environment
-            # variable named AZURE_STORAGE_CONNECTION_STRING
-            connect_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-
-            # Create a unique name for the queue
-            q_name = "priorityqueue"
-
-            # Instantiate a QueueClient object which will
-            # be used to create and manipulate the queue
-            queue_client = QueueClient.from_connection_string(
-                connect_str, q_name)
-
-            # Send the bug
-            queue_client.send_message(request.json)
-
-        else:
-            connect_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-            q_name = "lowerpriorityqueue"
-
-            queue_client = QueueClient.from_connection_string(
-                connect_str, q_name)
-
-            queue_client.send_message(request.json)
-
-        return request.json
+'''
