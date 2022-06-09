@@ -1,2 +1,2 @@
 flask==2.1.2
-azure-storage-queue=12.3.0
+azure-storage-queue==12.3.0
